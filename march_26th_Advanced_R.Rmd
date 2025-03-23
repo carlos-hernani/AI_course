@@ -1,0 +1,158 @@
+---
+title: "Advanced R"
+author: "Carlos Hernani Morales"
+date: "2025-03-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# The pacman package is an R package management tool https://trinker.github.io/pacman/vignettes/Introduction_to_pacman.html
+if (!require("pacman")) install.packages("pacman")
+needed_packages <- c("glue", "dplyr")
+# Loads and install packages
+pacman::p_load(needed_packages,character.only=TRUE)
+```
+
+
+The previous lesson taught you how to store data in R objects such as lists, matrices, etc. . What to do with those is the topic of this lesson.
+
+# Flow Control
+
+Flow control allows us to decide what to do with our data if a condition (or conditions) is met (or not).
+
+## Choices
+
+Base R has the basic if-else statement.
+
+```{r}
+# Base R oneliner if-else statement
+if (TRUE) "the action of the TRUE statement"
+if (FALSE) "the action of the TRUE statement" else "the action of the FALSE statement"
+```
+
+
+To apply this to an array of values we need a _vectorised if_, base R has _ifelse_.
+
+```{r}
+# array of ages of people attending a party; only >18 can be served alcoholic drinks
+ages <- sample.int(50, 10)
+ifelse(ages>=18, glue("Can be served alcohol. Age {as.character(ages)}"), glue("Will Not be served alcohol. Age {as.character(ages)}"))
+```
+
+If NAs are present Base R ifelse is not useful.
+
+```{r}
+ages <- c("29", NA)
+ifelse(ages>=18, glue("Can be served alcohol. Age {as.character(ages)}"), glue("Will Not be served alcohol. Age {as.character(ages)}"))
+```
+
+
+For more conditions we can use:
+
+```{r}
+# Base R if; else if and else statements
+# kind of tiring; see dplyr::case_when
+grade <- 90
+if (grade >= 90){
+  "A"
+}else if (x > 80){
+    "B"
+}else if (x > 50){
+    "C"
+}else{
+    "F"
+  }
+```
+
+If instead we have a set of values that our variable can have and we want to check it or do an action for each case, we have the _switch_ statement.
+
+```{r}
+grade <- "F"
+switch(grade,
+       A = "great job",
+       B = "good job",
+       C = "ok job",
+       F = "try harder next time",
+       stop("Unexpected value.")
+       )
+```
+
+For a more general (vectorised) and _tidier_ code we can use *dplyr 's case_when and case_match*  (more on that next lesson).
+(https://dplyr.tidyverse.org/reference/case_when.html  ;  https://dplyr.tidyverse.org/reference/case_match.html)
+
+It is fine to use Base R but you will soon realize that the tidyverse way of doing things is easier and once you learn the basics it will boost your performance.
+
+```{r}
+# if_else can handle NA
+if_else(ages>=18, glue("Can be served alcohol. Age {as.character(ages)}"), glue("Will Not be served alcohol. Age {as.character(ages)}"), missing = "missing age")
+```
+
+
+```{r}
+# case_when allows vectorised input and multiple conditions
+x <- 1:10
+dplyr::case_when(
+  x %% 35 == 0 ~ "fizz buzz",
+  x %% 5 == 0 ~ "fizz",
+  x %% 7 == 0 ~ "buzz",
+  is.na(x) ~ "???",
+  .default =  as.character(x)
+)
+#>  [1] "1"    "2"    "3"    "4"    "fizz" "6"    "buzz" "8"    "9"    "fizz"
+```
+
+```{r}
+# case_match is a vectorised switch
+notes <- c("Do", "Re", "Mi", "Fa", "Sol", "La", "Si", "Sib")
+
+dplyr::case_match(notes,
+                  "Do"~ "C",
+                  "Re"~ "D", 
+                  "Mi"~ "E", 
+                  "Fa"~ "F", 
+                  "Sol"~ "G", 
+                  "La"~ "A", 
+                  "Si"~ "B",
+                  #.default = "outside the written possibilities; use default to handle it"
+                  )
+```
+
+## Loops
+
+Loops are used to do a series of task in a sequence, _for_ is used to iterate over items in an array, _while_ performs an action (indefinitely) until a condition is met and _repeat_ does the same but to stop it you have to use _break_. In a data science context, the most common tool is using _map_, _apply_ (more on that in Functions) and _for_ .
+
+```{r}
+i <- "Check this"
+print(glue("i has an initial value {i}"))
+for (i in 1:10) {
+  print(i**2)
+}
+print(glue("i has a final value {i}")) # for loop item overwrites
+```
+
+To control the iteration you can use _next_ or _break_:
+
+```{r}
+# list of passengers with the possibility of an infected contagious person, 
+possibilities <- c("OK", "Mildly Contagious", "Extremely Contagious")
+passengers_status <- sample(possibilities, 100, replace = TRUE, prob=c(90,9,1)) # 10 percent infected
+for (status in passengers_status) {
+  if (status == "OK") next
+  if (status == "Mildly Contagious"){
+    print("Get out of the plane")
+  }
+  if (status == "Extremely Contagious"){
+    print("Trip cancelled")
+    break
+  }
+}
+passengers_status
+```
+
+
+# Functions
+
+# Dataframes
+
+# Plotting Base R
