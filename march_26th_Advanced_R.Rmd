@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 # The pacman package is an R package management tool https://trinker.github.io/pacman/vignettes/Introduction_to_pacman.html
 if (!require("pacman")) install.packages("pacman")
-needed_packages <- c("glue", "dplyr")
+needed_packages <- c("glue", "dplyr", "tidyverse", "babynames")
 # Loads and install packages
 pacman::p_load(needed_packages,character.only=TRUE)
 ```
@@ -138,21 +138,94 @@ To control the iteration you can use _next_ or _break_:
 possibilities <- c("OK", "Mildly Contagious", "Extremely Contagious")
 passengers_status <- sample(possibilities, 100, replace = TRUE, prob=c(90,9,1)) # 10 percent infected
 for (status in passengers_status) {
-  if (status == "OK") next
+  if (status == "OK") next # go to next iteration
   if (status == "Mildly Contagious"){
     print("Get out of the plane")
   }
   if (status == "Extremely Contagious"){
     print("Trip cancelled")
-    break
+    break # stops the loop
   }
 }
-passengers_status
+table(passengers_status)
 ```
 
 
 # Functions
 
+To avoid repeating code we can use functions and then apply them when needed.
+
+The syntax is:
+
+```{r}
+name_of_function <- function(argument1, argument2){
+  # The body of the function
+  # Comment inside function; try to document what the function does or at least use names that are self-explanatory
+  # to return a value just write the expression or use return()
+  argument1 + argument2
+  #return(argument1 + argument2)
+}
+
+name_of_function(10,10)
+
+```
+
+Usually you will give a name to your functions to re-utilize them later but sometimes when dealing with other functions that use a function as an input is better (if the code is short) to just use _anonymous functions_. When possible use this approach instead of _for_ loops (they can be slow if not used properly)
+
+```{r}
+# lapply applies a function over a list/vector
+lapply(1:10, function(x) sqrt(2*x)) # returns a list of the same length of the input
+sapply(1:10, function(x) sqrt(2*x)) # same values, but a vector
+purrr::map(1:10, \(x) sqrt(2*x)) # From R 4.1; lambda-like functions can be done like this; map works the same as lapply but can handle tidyverse helpers
+```
+
+Functions should do a task (efficiently preferably), to do more complex task one could encapsulate them inside others or _pipe_ them into the next one.
+
+_Pipes_  are operators that take the object from the left of the pipe and feeds it as an input to the right side of the pipe. To showcase this we will use some Regex examples (Regular expressions; string manipulation). There are at least 2 _pipes_: tidyverse (%>%) and Base R (|>). Tidyverse one can use a placeholder for the argument (.) .
+
+```{r}
+# 'fruit' contains the name of 80 fruits
+#fruit |> str_view("berry") # This is equivalent to str_view(fruit, "berry")
+#fruit %>% str_view("berry")
+"berry" %>% str_view(fruit,.) # placeholder of tidyverse's pipe
+```
+
+Functions have their own environment so be mindful when assigning variables.
+
+```{r}
+var <- 33
+foo <- function(){
+  print(var) # the function can access the environment where the function is defined but not the other way around
+  # foo has its own environment
+  var <- 10 # var from inside of a function is not the same var outside the function
+  var
+}
+print(var)
+foo()
+```
+
+
 # Dataframes
+
+A dataframe is a table, usually with column identifiers (column names) and sometimes with row identifiers (indexes). Let's see the iris dataset:
+
+```{r}
+iris
+dim(iris) # number of rows x number of columns
+length(iris) # the number of columns
+colnames(iris) # self-explanatory
+rownames(iris) # this dataset doesn't have specific row names so just a number
+```
+
+To create a dataframe (not very common; you probably won't do this ever, just load a dataset using _readr_) one can use Base R _data.frame_ or tidyverse's _tibble_:
+
+```{r}
+my_df <- data.frame(
+  "Date_ymd" = c("2025/3/26", "2025/3/27"),
+  "Class" = c("Advanced R", "Data Manipulation with Python")
+)
+my_df
+```
+
 
 # Plotting Base R
