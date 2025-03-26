@@ -628,45 +628,27 @@ plot(x = 1:10,                         # x-coordinates
 
 ```{r}
 # Scatter plot: mpg vs hp
-plot(mtcars$mpg, mtcars$hp,
-     main = "Scatter Plot of MPG vs Horsepower",
-     xlab = "Miles Per Gallon (mpg)",
-     ylab = "Horsepower (hp)",
-     pch = 19,  # solid circles
-     col = "blue")
+
 
 ```
 
 
 ```{r}
 # Boxplot: mpg by cyl (number of cylinders)
-boxplot(mpg ~ cyl, data = mtcars,
-        main = "Boxplot of MPG by Number of Cylinders",
-        xlab = "Number of Cylinders (cyl)",
-        ylab = "Miles Per Gallon (mpg)",
-        col = "lightgreen")
+
 
 ```
 
 ```{r}
 # Histogram of mpg (Miles per Gallon)
-hist(mtcars$mpg,
-     main = "Histogram of Miles Per Gallon",
-     xlab = "Miles Per Gallon (mpg)",
-     col = "orange",
-     border = "black",
-     breaks = 10)  # Set number of bins
+
 
 ```
 
 
 ```{r}
 # Bar plot: Frequency of different numbers of cylinders
-barplot(table(mtcars$cyl),
-        main = "Bar Plot of Number of Cylinders",
-        xlab = "Number of Cylinders",
-        ylab = "Frequency",
-        col = "purple")
+
 
 ```
 
@@ -674,12 +656,6 @@ barplot(table(mtcars$cyl),
 
 ```{r}
 # Correlation plot of numeric variables; 
-cor_matrix <- cor(mtcars)
-# Use heatmap to display correlation matrix
-heatmap(cor_matrix,
-        main = "Correlation Heatmap of mtcars",
-        col = heat.colors(10),  # Color palette for heatmap
-        scale = "none")
 
 ```
 
