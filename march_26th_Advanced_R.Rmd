@@ -559,25 +559,7 @@ write_csv(olive, "./datasets/olive_original.csv")
   
   
 ```{r}
-diabetes <- read_csv("datasets/diabetes.csv")
-skim(diabetes)
 
-diabetes$random <- rep(0,nrow(diabetes)) %>% jitter()
-
-write_csv(diabetes, "./datasets/diabetes_mod.csv")
-
-mann_whitney <- function(column){
-  # Mann Whitney U test is a non-parametric statistical test to check if a hypothesis is correct or not.
-  # In the MWU test case, the hypothesis is that there is no difference between groups in terms of their target value (Outcome in diabetes dataset for example)
-  # if the p-value obtained is less than 0.05 it is usually considered that there is a significant difference between groups.
-  wilcox.test(column ~ diabetes$Outcome)$p.value < 0.05# return True or False
-}
-
-mann_whitney_results <- sapply(diabetes, mann_whitney) # returns a False/True
-# columns where there are significant values
-columns_to_preserve <- names(diabetes)[mann_whitney_results]
-
-diabetes %>% subset(select=columns_to_preserve)
 ```
   
 
@@ -603,12 +585,37 @@ Useful parameters:
   + Colors
 
 
-## plot() example
+### plot() example and Exercise
+
+As you can see there are a lot of parameters/options and kinds of plots. The tasks are the following:
+
+Using the mtcars dataset.
+
+```{r}
+head(mtcars)
+```
+
+
+  + Scatter Plot of Miles per Gallon vs. Horsepower
+Create a scatter plot showing the relationship between Miles per Gallon (mpg) and Horsepower (hp). Customize the plot with a title and axis labels. Use blue color and solid circles for the points.
+
+  + Boxplot of Miles per Gallon by Number of Cylinders
+Create a boxplot comparing Miles per Gallon (mpg) for cars with different numbers of cylinders (cyl). Add a title and axis labels. Color the boxes light green.
+
+  + Histogram of Miles per Gallon
+Create a histogram that shows the distribution of Miles per Gallon (mpg) across the cars in the dataset. Customize the plot with a title, axis labels, orange-colored bars, and black borders. Set the number of bins to 10.
+
+  + Bar Plot of Frequency of Different Numbers of Cylinders
+Create a bar plot that shows the frequency of cars with different numbers of cylinders (cyl). Add appropriate axis labels and color the bars purple.
+
+  + Correlation Heatmap of All Numeric Variables
+Create a heatmap that visualizes the correlation matrix of all numeric variables in the mtcars dataset. Use an appropriate color scale (e.g., heat.colors()) and ensure the heatmap is clearly labeled.
+
 ```{r}
 plot(x = 1:10,                         # x-coordinates
      y = 1:10,                         # y-coordinates
      type = "p",                       # Just draw points (no lines)
-     main = "The Title",          
+     main = "Plot example",          
      sub = "The subtitle",
      xlab = "This is the x-axis label",
      ylab = "This is the y-axis label",
@@ -619,16 +626,62 @@ plot(x = 1:10,                         # x-coordinates
      cex = 1)                           # Size of the symbols
 ```
 
+```{r}
+# Scatter plot: mpg vs hp
+plot(mtcars$mpg, mtcars$hp,
+     main = "Scatter Plot of MPG vs Horsepower",
+     xlab = "Miles Per Gallon (mpg)",
+     ylab = "Horsepower (hp)",
+     pch = 19,  # solid circles
+     col = "blue")
+
+```
+
+
+```{r}
+# Boxplot: mpg by cyl (number of cylinders)
+boxplot(mpg ~ cyl, data = mtcars,
+        main = "Boxplot of MPG by Number of Cylinders",
+        xlab = "Number of Cylinders (cyl)",
+        ylab = "Miles Per Gallon (mpg)",
+        col = "lightgreen")
+
+```
+
+```{r}
+# Histogram of mpg (Miles per Gallon)
+hist(mtcars$mpg,
+     main = "Histogram of Miles Per Gallon",
+     xlab = "Miles Per Gallon (mpg)",
+     col = "orange",
+     border = "black",
+     breaks = 10)  # Set number of bins
+
+```
+
+
+```{r}
+# Bar plot: Frequency of different numbers of cylinders
+barplot(table(mtcars$cyl),
+        main = "Bar Plot of Number of Cylinders",
+        xlab = "Number of Cylinders",
+        ylab = "Frequency",
+        col = "purple")
+
+```
 
 
 
+```{r}
+# Correlation plot of numeric variables; 
+cor_matrix <- cor(mtcars)
+# Use heatmap to display correlation matrix
+heatmap(cor_matrix,
+        main = "Correlation Heatmap of mtcars",
+        col = heat.colors(10),  # Color palette for heatmap
+        scale = "none")
 
-
-
-
-
-
-
+```
 
 
 
