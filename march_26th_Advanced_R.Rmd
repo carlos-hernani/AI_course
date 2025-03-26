@@ -187,12 +187,10 @@ Case_when (case_match) are usually used inside tidyverse's _mutate_ to create (o
 Use the starwars dataset to create a column named "message" with a message that will be either "You are taller than 50% of people" "You are shorter than 50% of people". Be careful of NAs.
 
 ```{r}
-starwars %>% mutate(
-  message = case_when(
-    height < median(height, na.rm=TRUE) ~ "You are taller than 50% of people", 
-    height >= median(height, na.rm=TRUE) ~ "You are shorter than 50% of people", 
-    T ~ "no available data")
-  )
+# starwars %>% mutate(
+#   message = case_when(
+# 
+#   )
 
 ```
 
@@ -204,7 +202,7 @@ Loops are used to do a series of task in a sequence, _for_ is used to iterate ov
 
 ```{r}
 i <- "Check this"
-print(glue("i has an initial value {i}"))
+print(glue("i has an initial value: {i}"))
 for (i in 1:10) {
   print(i**2)
 }
@@ -228,6 +226,33 @@ for (status in passengers_status) {
   }
 }
 table(passengers_status)
+```
+
+### Exercise: Loops & ChatGPT
+
+
+Instead of using Google this time now learn to use ChatGPT. LLMs (Large Language Models) are changing the way people orient their workflow. But coding remains an engineering problem, break a big problem into smaller ones, studies show that LLMs work best when they are prompted with very precise inputs and tasks, so:
+
+  + Give ChatGPT a big prompt such as: "In R: You are given a numeric vector 'heights', where each element represent the height of basketball players in a fixed sequence. The task is to construct a new numeric vector 'taller_count' of the same length where each element at index 'i' represents how many taller players there are after the player at that position. Only use 'for' loops."
+  + (The MOST IMPORTANT STEP) Try to understand the code ChatGPT has given you. The better you code the better prompts you can give to LLMs. If you let GPT do all the work you won't develop problem solving skills.
+  + When the code you are given fails, argue with ChatGPT to solve it, giving more precise information/mini-tasks. Provide it with the Error information.
+
+  + Repeat this x5: you can ask ChatGPT for something like "Give me 'for' loop (in base R) examples that fail at execution or that produce incorrect results".
+  
+LLMs can give you: 
+
+|                        | Correct Task                                | Incorrect Task                               |
+|------------------------|---------------------------------------------|----------------------------------------------|
+| Executes efficiently   | Best (No further changes)                   | Big problem if you don't understand the code |
+| Executes inefficiently | Could be improved knowing about coding      | Same as before                               |
+| Does not execute       | Not that bad (makes you aware of a problem) | At least it doesn't run                      |
+
+Understanding the code is possibly the most important step of this. If the task (the algorithm implemented) is not the one you want you will get in the worst case scenario an apparently good code but it harm your work.
+
+__TIPS__: Let's be honest most of you have already used some kind of LLM or other so, instead of banning it, let's try to learn how to use them correctly. From now on all the exercises questions will be done using ChatGPT and you will have to correct them.
+
+```{r}
+
 ```
 
 
@@ -284,6 +309,61 @@ print(var)
 foo()
 ```
 
+### Exercises: Functions and ChatGPT
+
+Try to translate the code into a sentence (prompt) and ask ChatGPT to solve it. (You could also Copy/Paste the code but then you wouldn't be doing any skill development)
+
+```{r}
+# Given data frame
+df <- data.frame(
+  A = c(1, 2, 3),
+  B = c(4, 5, 6),
+  C = c(7, 8, 9)
+)
+
+df # take a look at df, 
+
+# Using apply() to calculate row-wise sum
+row_sums_apply <- apply(df, 2, sum) 
+print("Row sums using apply:")
+print(row_sums_apply)
+
+# Using sapply() 
+row_sums_sapply <- sapply(df, sum)
+print("Row sums using sapply:")
+print(row_sums_sapply)
+
+```
+
+This code was provided by ChatGPT, the idea is to: given a numeric vector calculate sum of numbers greater than the threshold. Uncomment the code and run it.
+
+  + First, fix the problem (it won't run).
+  + Second, make it more compact and use one of the functions from the "Conditional Statements" section.
+
+```{r}
+# Given vector of numbers
+numbers <- c(1, 5, 8, 12, 3, 7, 10)
+
+# Threshold value
+threshold <- 6
+
+# Using sapply() to calculate sum of numbers greater than the threshold
+sum_result_sapply <- sapply(numbers, function(x) {
+  if (x > threshold) {
+    return(x)
+  }
+})
+
+# Summing the result. 
+# Uncomment section below
+# total_sum_sapply <- sum(sum_result_sapply, na.rm = TRUE)
+# 
+# print(paste("Sum of numbers greater than", threshold, "is:", total_sum_sapply))
+
+```
+
+
+
 
 # 3. Dataframes
 
@@ -292,7 +372,7 @@ A dataframe is a table, usually with column identifiers (column names) and somet
 
 
 ```{r}
-iris
+#iris
 dim(iris) # number of rows x number of columns
 length(iris) # the number of columns
 nrow(iris) # the number of rows
@@ -346,6 +426,8 @@ my_df
 ```
 
 Dataframes can also be concatenated with other dataframes using _cbind_ or _rbind_ (columns and rows).
+
+### Mini-Exercise: Concatenation
 
 ```{r}
 # create a row and a column and bind them to 'my_df' using cbind and rbind

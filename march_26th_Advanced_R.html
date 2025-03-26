@@ -1639,11 +1639,11 @@ if-else</em>, base R has <em>ifelse</em>.</p>
 <pre class="r"><code># array of car speeds in the city; 
 speed &lt;- sample.int(80, 10)
 ifelse(speed&gt;=50, glue(&quot;Will be fined. Speed {as.character(speed)} km/h&quot;), glue(&quot;Will Not be fined. Speed {as.character(speed)} km/h&quot;))</code></pre>
-<pre><code>##  [1] &quot;Will Not be fined. Speed 46 km/h&quot; &quot;Will Not be fined. Speed 49 km/h&quot;
-##  [3] &quot;Will Not be fined. Speed 9 km/h&quot;  &quot;Will be fined. Speed 65 km/h&quot;    
-##  [5] &quot;Will Not be fined. Speed 11 km/h&quot; &quot;Will be fined. Speed 61 km/h&quot;    
-##  [7] &quot;Will Not be fined. Speed 15 km/h&quot; &quot;Will Not be fined. Speed 29 km/h&quot;
-##  [9] &quot;Will be fined. Speed 76 km/h&quot;     &quot;Will be fined. Speed 78 km/h&quot;</code></pre>
+<pre><code>##  [1] &quot;Will Not be fined. Speed 49 km/h&quot; &quot;Will Not be fined. Speed 30 km/h&quot;
+##  [3] &quot;Will Not be fined. Speed 23 km/h&quot; &quot;Will Not be fined. Speed 5 km/h&quot; 
+##  [5] &quot;Will be fined. Speed 54 km/h&quot;     &quot;Will Not be fined. Speed 42 km/h&quot;
+##  [7] &quot;Will be fined. Speed 61 km/h&quot;     &quot;Will Not be fined. Speed 45 km/h&quot;
+##  [9] &quot;Will Not be fined. Speed 25 km/h&quot; &quot;Will Not be fined. Speed 2 km/h&quot;</code></pre>
 <p>Typically real-world datasets have NAs present (be it because there
 was an error while imputing the values or because people are lazy) If
 NAs are present Base R ifelse is not useful.</p>
@@ -1721,28 +1721,10 @@ dplyr::case_match(notes,
 <p>Use the starwars dataset to create a column named “message” with a
 message that will be either “You are taller than 50% of people” “You are
 shorter than 50% of people”. Be careful of NAs.</p>
-<pre class="r"><code>starwars %&gt;% mutate(
-  message = case_when(
-    height &lt; median(height, na.rm=TRUE) ~ &quot;You are taller than 50% of people&quot;, 
-    height &gt;= median(height, na.rm=TRUE) ~ &quot;You are shorter than 50% of people&quot;, 
-    T ~ &quot;no available data&quot;)
-  )</code></pre>
-<pre><code>## # A tibble: 87 × 15
-##    name     height  mass hair_color skin_color eye_color birth_year sex   gender
-##    &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-##  1 Luke Sk…    172    77 blond      fair       blue            19   male  mascu…
-##  2 C-3PO       167    75 &lt;NA&gt;       gold       yellow         112   none  mascu…
-##  3 R2-D2        96    32 &lt;NA&gt;       white, bl… red             33   none  mascu…
-##  4 Darth V…    202   136 none       white      yellow          41.9 male  mascu…
-##  5 Leia Or…    150    49 brown      light      brown           19   fema… femin…
-##  6 Owen La…    178   120 brown, gr… light      blue            52   male  mascu…
-##  7 Beru Wh…    165    75 brown      light      blue            47   fema… femin…
-##  8 R5-D4        97    32 &lt;NA&gt;       white, red red             NA   none  mascu…
-##  9 Biggs D…    183    84 black      light      brown           24   male  mascu…
-## 10 Obi-Wan…    182    77 auburn, w… fair       blue-gray       57   male  mascu…
-## # ℹ 77 more rows
-## # ℹ 6 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
-## #   vehicles &lt;list&gt;, starships &lt;list&gt;, message &lt;chr&gt;</code></pre>
+<pre class="r"><code># starwars %&gt;% mutate(
+#   message = case_when(
+# 
+#   )</code></pre>
 </div>
 </div>
 <div id="loops" class="section level2">
@@ -1754,8 +1736,8 @@ the same but to stop it you have to use <em>break</em>. In a data
 science context, the most common tool is using <em>map</em>,
 <em>apply</em> (more on that in Functions) and <em>for</em> .</p>
 <pre class="r"><code>i &lt;- &quot;Check this&quot;
-print(glue(&quot;i has an initial value {i}&quot;))</code></pre>
-<pre><code>## i has an initial value Check this</code></pre>
+print(glue(&quot;i has an initial value: {i}&quot;))</code></pre>
+<pre><code>## i has an initial value: Check this</code></pre>
 <pre class="r"><code>for (i in 1:10) {
   print(i**2)
 }</code></pre>
@@ -1792,11 +1774,78 @@ for (status in passengers_status) {
 ## [1] &quot;Get out of the plane&quot;
 ## [1] &quot;Get out of the plane&quot;
 ## [1] &quot;Get out of the plane&quot;
-## [1] &quot;Get out of the plane&quot;</code></pre>
+## [1] &quot;Get out of the plane&quot;
+## [1] &quot;Trip cancelled&quot;</code></pre>
 <pre class="r"><code>table(passengers_status)</code></pre>
 <pre><code>## passengers_status
-## Mildly Contagious                OK 
-##                 7                93</code></pre>
+## Extremely Contagious    Mildly Contagious                   OK 
+##                    1                    9                   90</code></pre>
+<div id="exercise-loops-chatgpt" class="section level3">
+<h3>Exercise: Loops &amp; ChatGPT</h3>
+<p>Instead of using Google this time now learn to use ChatGPT. LLMs
+(Large Language Models) are changing the way people orient their
+workflow. But coding remains an engineering problem, break a big problem
+into smaller ones, studies show that LLMs work best when they are
+prompted with very precise inputs and tasks, so:</p>
+<ul>
+<li><p>Give ChatGPT a big prompt such as: “In R: You are given a numeric
+vector ‘heights’, where each element represent the height of basketball
+players in a fixed sequence. The task is to construct a new numeric
+vector ‘taller_count’ of the same length where each element at index ‘i’
+represents how many taller players there are after the player at that
+position. Only use ‘for’ loops.”</p></li>
+<li><p>(The MOST IMPORTANT STEP) Try to understand the code ChatGPT has
+given you. The better you code the better prompts you can give to LLMs.
+If you let GPT do all the work you won’t develop problem solving
+skills.</p></li>
+<li><p>When the code you are given fails, argue with ChatGPT to solve
+it, giving more precise information/mini-tasks. Provide it with the
+Error information.</p></li>
+<li><p>Repeat this x5: you can ask ChatGPT for something like “Give me
+‘for’ loop (in base R) examples that fail at execution or that produce
+incorrect results”.</p></li>
+</ul>
+<p>LLMs can give you:</p>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="39%" />
+<col width="40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Correct Task</th>
+<th>Incorrect Task</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Executes efficiently</td>
+<td>Best (No further changes)</td>
+<td>Big problem if you don’t understand the code</td>
+</tr>
+<tr class="even">
+<td>Executes inefficiently</td>
+<td>Could be improved knowing about coding</td>
+<td>Same as before</td>
+</tr>
+<tr class="odd">
+<td>Does not execute</td>
+<td>Not that bad (makes you aware of a problem)</td>
+<td>At least it doesn’t run</td>
+</tr>
+</tbody>
+</table>
+<p>Understanding the code is possibly the most important step of this.
+If the task (the algorithm implemented) is not the one you want you will
+get in the worst case scenario an apparently good code but it harm your
+work.</p>
+<p><strong>TIPS</strong>: Let’s be honest most of you have already used
+some kind of LLM or other so, instead of banning it, let’s try to learn
+how to use them correctly. From now on all the exercises questions will
+be done using ChatGPT and you will have to correct them.</p>
+</div>
 </div>
 </div>
 <div id="functions" class="section level1">
@@ -1924,165 +1973,72 @@ print(var)</code></pre>
 <pre class="r"><code>foo()</code></pre>
 <pre><code>## [1] 33</code></pre>
 <pre><code>## [1] 10</code></pre>
+<div id="exercises-functions-and-chatgpt" class="section level3">
+<h3>Exercises: Functions and ChatGPT</h3>
+<p>Try to translate the code into a sentence (prompt) and ask ChatGPT to
+solve it. (You could also Copy/Paste the code but then you wouldn’t be
+doing any skill development)</p>
+<pre class="r"><code># Given data frame
+df &lt;- data.frame(
+  A = c(1, 2, 3),
+  B = c(4, 5, 6),
+  C = c(7, 8, 9)
+)
+
+df # take a look at df, </code></pre>
+<pre><code>##   A B C
+## 1 1 4 7
+## 2 2 5 8
+## 3 3 6 9</code></pre>
+<pre class="r"><code># Using apply() to calculate row-wise sum
+row_sums_apply &lt;- apply(df, 2, sum) 
+print(&quot;Row sums using apply:&quot;)</code></pre>
+<pre><code>## [1] &quot;Row sums using apply:&quot;</code></pre>
+<pre class="r"><code>print(row_sums_apply)</code></pre>
+<pre><code>##  A  B  C 
+##  6 15 24</code></pre>
+<pre class="r"><code># Using sapply() 
+row_sums_sapply &lt;- sapply(df, sum)
+print(&quot;Row sums using sapply:&quot;)</code></pre>
+<pre><code>## [1] &quot;Row sums using sapply:&quot;</code></pre>
+<pre class="r"><code>print(row_sums_sapply)</code></pre>
+<pre><code>##  A  B  C 
+##  6 15 24</code></pre>
+<p>This code was provided by ChatGPT, the idea is to: given a numeric
+vector calculate sum of numbers greater than the threshold. Uncomment
+the code and run it.</p>
+<ul>
+<li>First, fix the problem (it won’t run).</li>
+<li>Second, make it more compact and use one of the functions from the
+“Conditional Statements” section.</li>
+</ul>
+<pre class="r"><code># Given vector of numbers
+numbers &lt;- c(1, 5, 8, 12, 3, 7, 10)
+
+# Threshold value
+threshold &lt;- 6
+
+# Using sapply() to calculate sum of numbers greater than the threshold
+sum_result_sapply &lt;- sapply(numbers, function(x) {
+  if (x &gt; threshold) {
+    return(x)
+  }
+})
+
+# Summing the result. 
+# Uncomment section below
+# total_sum_sapply &lt;- sum(sum_result_sapply, na.rm = TRUE)
+# 
+# print(paste(&quot;Sum of numbers greater than&quot;, threshold, &quot;is:&quot;, total_sum_sapply))</code></pre>
+</div>
 </div>
 <div id="dataframes" class="section level1">
 <h1>3. Dataframes</h1>
 <p>A dataframe is a table, usually with column identifiers (column
 names) and sometimes with row identifiers (indexes). Let’s see the iris
 dataset:</p>
-<pre class="r"><code>iris</code></pre>
-<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
-## 1            5.1         3.5          1.4         0.2     setosa
-## 2            4.9         3.0          1.4         0.2     setosa
-## 3            4.7         3.2          1.3         0.2     setosa
-## 4            4.6         3.1          1.5         0.2     setosa
-## 5            5.0         3.6          1.4         0.2     setosa
-## 6            5.4         3.9          1.7         0.4     setosa
-## 7            4.6         3.4          1.4         0.3     setosa
-## 8            5.0         3.4          1.5         0.2     setosa
-## 9            4.4         2.9          1.4         0.2     setosa
-## 10           4.9         3.1          1.5         0.1     setosa
-## 11           5.4         3.7          1.5         0.2     setosa
-## 12           4.8         3.4          1.6         0.2     setosa
-## 13           4.8         3.0          1.4         0.1     setosa
-## 14           4.3         3.0          1.1         0.1     setosa
-## 15           5.8         4.0          1.2         0.2     setosa
-## 16           5.7         4.4          1.5         0.4     setosa
-## 17           5.4         3.9          1.3         0.4     setosa
-## 18           5.1         3.5          1.4         0.3     setosa
-## 19           5.7         3.8          1.7         0.3     setosa
-## 20           5.1         3.8          1.5         0.3     setosa
-## 21           5.4         3.4          1.7         0.2     setosa
-## 22           5.1         3.7          1.5         0.4     setosa
-## 23           4.6         3.6          1.0         0.2     setosa
-## 24           5.1         3.3          1.7         0.5     setosa
-## 25           4.8         3.4          1.9         0.2     setosa
-## 26           5.0         3.0          1.6         0.2     setosa
-## 27           5.0         3.4          1.6         0.4     setosa
-## 28           5.2         3.5          1.5         0.2     setosa
-## 29           5.2         3.4          1.4         0.2     setosa
-## 30           4.7         3.2          1.6         0.2     setosa
-## 31           4.8         3.1          1.6         0.2     setosa
-## 32           5.4         3.4          1.5         0.4     setosa
-## 33           5.2         4.1          1.5         0.1     setosa
-## 34           5.5         4.2          1.4         0.2     setosa
-## 35           4.9         3.1          1.5         0.2     setosa
-## 36           5.0         3.2          1.2         0.2     setosa
-## 37           5.5         3.5          1.3         0.2     setosa
-## 38           4.9         3.6          1.4         0.1     setosa
-## 39           4.4         3.0          1.3         0.2     setosa
-## 40           5.1         3.4          1.5         0.2     setosa
-## 41           5.0         3.5          1.3         0.3     setosa
-## 42           4.5         2.3          1.3         0.3     setosa
-## 43           4.4         3.2          1.3         0.2     setosa
-## 44           5.0         3.5          1.6         0.6     setosa
-## 45           5.1         3.8          1.9         0.4     setosa
-## 46           4.8         3.0          1.4         0.3     setosa
-## 47           5.1         3.8          1.6         0.2     setosa
-## 48           4.6         3.2          1.4         0.2     setosa
-## 49           5.3         3.7          1.5         0.2     setosa
-## 50           5.0         3.3          1.4         0.2     setosa
-## 51           7.0         3.2          4.7         1.4 versicolor
-## 52           6.4         3.2          4.5         1.5 versicolor
-## 53           6.9         3.1          4.9         1.5 versicolor
-## 54           5.5         2.3          4.0         1.3 versicolor
-## 55           6.5         2.8          4.6         1.5 versicolor
-## 56           5.7         2.8          4.5         1.3 versicolor
-## 57           6.3         3.3          4.7         1.6 versicolor
-## 58           4.9         2.4          3.3         1.0 versicolor
-## 59           6.6         2.9          4.6         1.3 versicolor
-## 60           5.2         2.7          3.9         1.4 versicolor
-## 61           5.0         2.0          3.5         1.0 versicolor
-## 62           5.9         3.0          4.2         1.5 versicolor
-## 63           6.0         2.2          4.0         1.0 versicolor
-## 64           6.1         2.9          4.7         1.4 versicolor
-## 65           5.6         2.9          3.6         1.3 versicolor
-## 66           6.7         3.1          4.4         1.4 versicolor
-## 67           5.6         3.0          4.5         1.5 versicolor
-## 68           5.8         2.7          4.1         1.0 versicolor
-## 69           6.2         2.2          4.5         1.5 versicolor
-## 70           5.6         2.5          3.9         1.1 versicolor
-## 71           5.9         3.2          4.8         1.8 versicolor
-## 72           6.1         2.8          4.0         1.3 versicolor
-## 73           6.3         2.5          4.9         1.5 versicolor
-## 74           6.1         2.8          4.7         1.2 versicolor
-## 75           6.4         2.9          4.3         1.3 versicolor
-## 76           6.6         3.0          4.4         1.4 versicolor
-## 77           6.8         2.8          4.8         1.4 versicolor
-## 78           6.7         3.0          5.0         1.7 versicolor
-## 79           6.0         2.9          4.5         1.5 versicolor
-## 80           5.7         2.6          3.5         1.0 versicolor
-## 81           5.5         2.4          3.8         1.1 versicolor
-## 82           5.5         2.4          3.7         1.0 versicolor
-## 83           5.8         2.7          3.9         1.2 versicolor
-## 84           6.0         2.7          5.1         1.6 versicolor
-## 85           5.4         3.0          4.5         1.5 versicolor
-## 86           6.0         3.4          4.5         1.6 versicolor
-## 87           6.7         3.1          4.7         1.5 versicolor
-## 88           6.3         2.3          4.4         1.3 versicolor
-## 89           5.6         3.0          4.1         1.3 versicolor
-## 90           5.5         2.5          4.0         1.3 versicolor
-## 91           5.5         2.6          4.4         1.2 versicolor
-## 92           6.1         3.0          4.6         1.4 versicolor
-## 93           5.8         2.6          4.0         1.2 versicolor
-## 94           5.0         2.3          3.3         1.0 versicolor
-## 95           5.6         2.7          4.2         1.3 versicolor
-## 96           5.7         3.0          4.2         1.2 versicolor
-## 97           5.7         2.9          4.2         1.3 versicolor
-## 98           6.2         2.9          4.3         1.3 versicolor
-## 99           5.1         2.5          3.0         1.1 versicolor
-## 100          5.7         2.8          4.1         1.3 versicolor
-## 101          6.3         3.3          6.0         2.5  virginica
-## 102          5.8         2.7          5.1         1.9  virginica
-## 103          7.1         3.0          5.9         2.1  virginica
-## 104          6.3         2.9          5.6         1.8  virginica
-## 105          6.5         3.0          5.8         2.2  virginica
-## 106          7.6         3.0          6.6         2.1  virginica
-## 107          4.9         2.5          4.5         1.7  virginica
-## 108          7.3         2.9          6.3         1.8  virginica
-## 109          6.7         2.5          5.8         1.8  virginica
-## 110          7.2         3.6          6.1         2.5  virginica
-## 111          6.5         3.2          5.1         2.0  virginica
-## 112          6.4         2.7          5.3         1.9  virginica
-## 113          6.8         3.0          5.5         2.1  virginica
-## 114          5.7         2.5          5.0         2.0  virginica
-## 115          5.8         2.8          5.1         2.4  virginica
-## 116          6.4         3.2          5.3         2.3  virginica
-## 117          6.5         3.0          5.5         1.8  virginica
-## 118          7.7         3.8          6.7         2.2  virginica
-## 119          7.7         2.6          6.9         2.3  virginica
-## 120          6.0         2.2          5.0         1.5  virginica
-## 121          6.9         3.2          5.7         2.3  virginica
-## 122          5.6         2.8          4.9         2.0  virginica
-## 123          7.7         2.8          6.7         2.0  virginica
-## 124          6.3         2.7          4.9         1.8  virginica
-## 125          6.7         3.3          5.7         2.1  virginica
-## 126          7.2         3.2          6.0         1.8  virginica
-## 127          6.2         2.8          4.8         1.8  virginica
-## 128          6.1         3.0          4.9         1.8  virginica
-## 129          6.4         2.8          5.6         2.1  virginica
-## 130          7.2         3.0          5.8         1.6  virginica
-## 131          7.4         2.8          6.1         1.9  virginica
-## 132          7.9         3.8          6.4         2.0  virginica
-## 133          6.4         2.8          5.6         2.2  virginica
-## 134          6.3         2.8          5.1         1.5  virginica
-## 135          6.1         2.6          5.6         1.4  virginica
-## 136          7.7         3.0          6.1         2.3  virginica
-## 137          6.3         3.4          5.6         2.4  virginica
-## 138          6.4         3.1          5.5         1.8  virginica
-## 139          6.0         3.0          4.8         1.8  virginica
-## 140          6.9         3.1          5.4         2.1  virginica
-## 141          6.7         3.1          5.6         2.4  virginica
-## 142          6.9         3.1          5.1         2.3  virginica
-## 143          5.8         2.7          5.1         1.9  virginica
-## 144          6.8         3.2          5.9         2.3  virginica
-## 145          6.7         3.3          5.7         2.5  virginica
-## 146          6.7         3.0          5.2         2.3  virginica
-## 147          6.3         2.5          5.0         1.9  virginica
-## 148          6.5         3.0          5.2         2.0  virginica
-## 149          6.2         3.4          5.4         2.3  virginica
-## 150          5.9         3.0          5.1         1.8  virginica</code></pre>
-<pre class="r"><code>dim(iris) # number of rows x number of columns</code></pre>
+<pre class="r"><code>#iris
+dim(iris) # number of rows x number of columns</code></pre>
 <pre><code>## [1] 150   5</code></pre>
 <pre class="r"><code>length(iris) # the number of columns</code></pre>
 <pre><code>## [1] 5</code></pre>
@@ -2355,7 +2311,10 @@ my_df</code></pre>
 ## 2 2025/3/27 Data Manipulation with Python Carlos H.       1        2        3</code></pre>
 <p>Dataframes can also be concatenated with other dataframes using
 <em>cbind</em> or <em>rbind</em> (columns and rows).</p>
+<div id="mini-exercise-concatenation" class="section level3">
+<h3>Mini-Exercise: Concatenation</h3>
 <pre class="r"><code># create a row and a column and bind them to &#39;my_df&#39; using cbind and rbind</code></pre>
+</div>
 </div>
 <div id="changing-the-names-of-columns" class="section level2">
 <h2>Changing the names of columns</h2>
